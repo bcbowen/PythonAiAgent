@@ -13,6 +13,8 @@ def main() -> int:
     messages = [
         types.Content(role="user", parts=[types.Part(text=prompt)])
     ]
+
+    verbose = "--verbose" in sys.argv
     load_dotenv()
     api_key = os.environ.get("GEMINI_API_KEY")
     client = genai.Client(api_key=api_key)
@@ -20,7 +22,8 @@ def main() -> int:
     #content = client.generate_content(model, prompt)
     content = client.models.generate_content(model=model, contents=messages)
     print(content.text)
-    if content.usage_metadata:
+    if content.usage_metadata and verbose:
+        print(f"User prompt: {prompt}")
         print(f"Prompt tokens: {content.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {content.usage_metadata.candidates_token_count}")
     sys.exit(0)
