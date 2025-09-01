@@ -16,7 +16,9 @@ def get_files_info(working_directory, directory=".") -> str:
         with os.scandir(directory_path) as dir_info: 
             for item in dir_info:   
                 file_stat = item.stat()
-                output.append(f"- {item.name}: file_size={file_stat.st_size} bytes, is_dir={item.is_dir()} ")
+                info = f"- {item.name}: file_size={file_stat.st_size} bytes, is_dir={item.is_dir()} "
+                output.append(info)
+                print(info)
             return "\n".join(output)
     except: 
         return "Error: Something strange is afoot"
