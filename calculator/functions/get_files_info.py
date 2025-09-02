@@ -2,26 +2,32 @@ import os
 #from pathlib import Path
 
 def get_files_info(working_directory, directory=".") -> str:
-    directory_path = os.path.abspath(os.path.join(working_directory, directory))
     working_path = os.path.abspath(working_directory)
-
+    directory_path = os.path.abspath(os.path.join(working_directory, directory))
+    
     if not directory_path.startswith(working_path): 
-        return f'Error: Cannot list "{directory}" as it is outside the permitted working directory'
+        result = f'Error: Cannot list "{directory}" as it is outside the permitted working directory'
+        print(result)
+        return result
 
     if not os.path.isdir(directory_path): 
-        return f'Error: "{directory}" is not a directory'
+        result = f'Error: "{directory}" is not a directory'
+        print(result)
+        return result
     
     output = []
     try: 
         with os.scandir(directory_path) as dir_info: 
             for item in dir_info:   
                 file_stat = item.stat()
-                info = f"- {item.name}: file_size={file_stat.st_size} bytes, is_dir={item.is_dir()} "
-                output.append(info)
-                print(info)
+                result = f"- {item.name}: file_size={file_stat.st_size} bytes, is_dir={item.is_dir()} "
+                output.append(result)
+                print(result)
             return "\n".join(output)
     except: 
-        return "Error: Something strange is afoot"
+        result = "Error: Something strange is afoot"
+        print(result)
+        return result
 
 
 """
